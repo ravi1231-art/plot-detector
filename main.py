@@ -17,7 +17,7 @@ async def detect_plot_api(
     scale_pixels: float = Form(...),     # e.g., 100
     scale_feet: float = Form(...),       # e.g., 10
 ):
-    temp_path = f"temp_{image.filename}"
+    temp_path = f"/tmp/temp_{image.filename}"
     with open(temp_path, "wb") as f:
         shutil.copyfileobj(image.file, f)
 
