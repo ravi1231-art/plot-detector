@@ -64,7 +64,7 @@ def process_plot(image, tap_point, scale_pixels, scale_feet):
     debug_img = image.copy()
     cv2.drawContours(debug_img, outer_contours, -1, (255, 0, 0), 2)  # 🔵 Blue = outer
     cv2.drawContours(debug_img, inner_contours, -1, (0, 0, 255), 2)  # 🔴 Red = inner
-    cv2.imwrite("debug_inner_outer.jpg", debug_img)
+    # cv2.imwrite("debug_inner_outer.jpg", debug_img)
 
     # 🔍 Step 3: Tap Point Inside Check (Prioritize inner-most)
     selected_contour = None
@@ -105,6 +105,6 @@ def process_plot(image, tap_point, scale_pixels, scale_feet):
     # 🖼 Optional: Draw and save the final smooth contour
     smooth_debug = image.copy()
     cv2.drawContours(smooth_debug, [approx], -1, (0, 255, 0), 2)  # Green
-    cv2.imwrite("debug_smooth_contour.jpg", smooth_debug)
+    # cv2.imwrite("debug_smooth_contour.jpg", smooth_debug)
 
     return data
