@@ -4,9 +4,8 @@ from utils import calculate_lengths_and_area
 
 
 
-def process_plot(image_path, tap_point, scale_pixels, scale_feet):
-    print("🔍 Tap Point:", tap_point)
-    image = cv2.imread(image_path)
+def process_plot(image, tap_point, scale_pixels, scale_feet):
+    # image already loaded hai OpenCV format me
 
     if image is None:
         raise ValueError("❌ Failed to load image. Check image path.")

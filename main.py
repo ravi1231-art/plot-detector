@@ -1,27 +1,26 @@
 from fastapi import FastAPI, File, UploadFile, Form
 from detect_plot import process_plot
 from fastapi.responses import JSONResponse
-import shutil
-import os
+import numpy as np
+import cv2
 
 app = FastAPI()
-
-# uvicorn main:app --host 0.0.0.0 --port 8000 --reload
-
 
 @app.post("/detect-plot")
 async def detect_plot_api(
     image: UploadFile = File(...),
     x: int = Form(...),
     y: int = Form(...),
-    scale_pixels: float = Form(...),     # e.g., 100
-    scale_feet: float = Form(...),       # e.g., 10
+    scale_pixels: float = Form(...),
+    scale_feet: float = Form(...),
 ):
-    temp_path = f"temp_{image.filename}"
-    with open(temp_path, "wb") as f:
-        shutil.copyfileobj(image.file, f)
+    contents = await image.read()
+    np_arr = np.frombuffer(contents, np.uint8)
+    img = cv2.imdecode(np_arr, cv2.IMREAD_COLOR)
 
-    result = process_plot(temp_path, (x, y), scale_pixels, scale_feet)
-    os.remove(temp_path)
+    if img is None:
+        return JSONResponse(status_code=400, content={"error": "Failed to decode image"})
+
+    result = process_plot(img, (x, y), scale_pixels, scale_feet)
 
     return JSONResponse(content=result)
